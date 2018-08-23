@@ -12,15 +12,37 @@ include('models/create_conversation.php');
         $login = new UserLogin ($username, $password);
         $login->pdo = $pdo;
         $data = $login->getdata(); 
-     } 
+     }
 
-
-     
+     if(isset($_SESSION['id'])){
+       $user_id = $_SESSION['id'];
+     $userpage = new Conversations ();
+     $userpage->pdo = $pdo;
+     $userinfo = $userpage->userpage($user_id);
+     }
         require_once('views/pages/index.php');
      }
     
     public function home() {
     require_once('views/pages/index.php');
+  }
+
+  public function mymessages () {
+
+
+   
+   if(isset($_SESSION['id'])) {
+    include('connection.php');
+    $user_id = $_SESSION['id'];
+    $userpage = new Conversations ();
+    $userpage->pdo = $pdo;
+    $userinfo = $userpage->userpage($user_id);
+  
+  
+  } else {
+  
+  }
+    require_once('views/pages/mymessages.php');
   }
 
   public function users() {
@@ -48,7 +70,7 @@ include('models/create_conversation.php');
     if(isset($_POST['submit'])) {
       include('connection.php');
       $user_one = $_SESSION['id'];
-      $user_two = $_POST['id'];
+      $user_two = $_GET['id'];
       $user_ip = 111;
       $timestamp = 222;
       
@@ -64,7 +86,7 @@ include('models/create_conversation.php');
           $v['0']['c_id'];
       }
       $c_id = $v['0']['c_id'];
-      echo $c_id;
+      //echo $c_id;
 
 
       $messages = new Conversations ();

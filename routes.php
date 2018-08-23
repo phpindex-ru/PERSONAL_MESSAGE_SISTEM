@@ -9,6 +9,9 @@
       case 'index':
       $controller = new IndexController();
     break;
+    case 'usercontroller':
+    $controller = new UsercontrollerController();
+  break;
       case 'posts':
         // we need the model to query the database later in the controller
         require_once('models/post.php');
@@ -21,7 +24,8 @@
 
   // we're adding an entry for the new controller and its actions
   $controllers = array('pages' => ['home', 'login', 'error', 'logout'],
-                       'index' => ['index', 'home', 'users', 'userpage', 'startconversation', 'sendmessage', 'conversation'],
+                       'usercontroller' => ['logout'],
+                       'index' => ['index', 'home', 'users', 'userpage', 'startconversation', 'sendmessage', 'conversation', 'mymessages'],
                        'registration' => ['index']
                       );
 
