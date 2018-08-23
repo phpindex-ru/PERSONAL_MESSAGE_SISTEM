@@ -2,67 +2,62 @@
 include('connection.php');
 
 if(isset($_SESSION['id'])){
-    $myclass = new Conversations();
-    $myclass->pdo = $pdo;
-    $user_id = $_SESSION['id'];
-    $data = $myclass->myconversations($user_id); 
-    // session_destroy();
-    // $_SESSION['id'] = false;
+  include('views/header.php');
+?>
 
-
-    echo '<main role="main" class="container">';
-    echo '<br>';
-    echo ' </div> </div>';
-    echo ' </div>';
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
-    echo '<div class="row">';
-    echo '<div class="col-md-4">';
-    echo '<div class="my-3 p-3 bg-white rounded box-shadow">';
-    echo 'User id: ' . $_SESSION['id'];
-    echo '</div>';
-    echo '</div>';
-    echo '<div class="col-md-8">';
-    echo '<div class="my-3 p-3 bg-white rounded box-shadow">';
-    echo '<h6 class="border-bottom border-gray pb-2 mb-0">Мои сообщения :</h6>';
-
-foreach($data as $key => $val) {
-
-          echo ' <div class="media text-muted pt-3">';
-          echo ' <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded">';
-          echo ' <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">';
-          echo ' <strong class="d-block text-gray-dark">Username :';
-          echo "<a href='index.php?controller=index&action=conversation&c_id={$val['c_id']}'>";
-          echo $val['username'];
-          //echo 'user id :' . $val['user_id'] . ' ';
-          echo "</a>";
-          echo '</strong>';
-$sql = 'SELECT R.cr_id, R.thetime, R.reply, R.user_id_fk FROM conversation_reply R WHERE R.c_id_fk = :c_id ORDER BY R.cr_id DESC LIMIT 1';
-$stmt = $pdo->prepare($sql);
-$stmt->execute([
-    'c_id' => $val['c_id']
-    ]);
-$posts = $stmt->fetchAll();
-
-foreach($posts as $key => $post) {
-    echo $post['reply'];
-}
-echo ' </p>';
-echo '   </div>';
-}
-
-
-
-echo '</div>';
-echo '</div>';
-echo '</div>';
-echo '</main>';
+    <main role="main" class="container">
+    <br>
+      </div> </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-4">
+    <div class="my-3 p-3 bg-white rounded box-shadow">
+    <div class="text-center">
+      <img src="images/<?php echo $userinfo['user_picture']; ?>" class="img-thumbnail" alt="...">
+    </div>
+    <br>
+    <center>
+    <!--<form action="index.php?controller=index&action=startconversation" method="post">
+    <input type = "hidden" name = "id" value ="<?php echo $userinfo['user_id']; ?>" >
+    <input type="submit" name="submit" value="Написать сообщение">
+    </form>-->
+    </center>
+    </div>
+    </div>
+    <div class="col-md-8">
+    <div class="my-3 p-3 bg-white rounded box-shadow">
+    Имя : <?php
+    //echo $userinfo['username'];
+    echo $userinfo['first_name'] . ' ' . $userinfo['last_name'] . ' ' . $userinfo['age'] . ' лет';
+    ?>
+    <br><hr>
+    <?php echo 'Страна: ' . $userinfo['country']; ?>
+    <br><hr>
+    <?php echo 'Город: ' . $userinfo['city']; ?>
+    <br><hr>
+    О себе :
+    <br>
+    <?php echo $userinfo['about']; ?>
+          </div>
+          </div>
+          </div>
+        </main>
+<?php
 
 } else {
 
+    echo '<div class="navbar navbar-expand-md fixed-top  bg-white box-shadow">';
+    echo '<div class="container">';
+    echo '<nav class="nav nav-underline">';
+    echo '<a class="nav-link active" href="index.php">Моя Страница</a>';
+    echo '   </div>';
+    echo ' </nav>';
+    echo '</div> ';
+echo '<br>';
     echo '<main role="main" class="container">';
-    echo '<br>';
     echo '</div> </div>';
     echo '</div>';
     echo '</div>';
@@ -71,31 +66,59 @@ echo '</main>';
     echo '<div class="row">';
     echo ' <div class="col-md-4">';
     echo ' <div class="my-3 p-3 bg-white rounded box-shadow">';
+    echo 'Вход';
+    echo '<hr>';
     echo ' <form method="post" action="">';
     echo '  <div class="form-group">';
-    echo '    <label for="exampleInputEmail1">Email address</label>';
-    echo '    <input type="email" class="form-control" id="exampleInputEmail1" name = "username" aria-describedby="emailHelp" placeholder="Enter email">';
-    echo '    <small id="emailHelp" class="form-text text-muted">We\'ll never share your email with anyone else.</small>';
+    echo '    <label for="exampleInputEmail1">Электронная почта</label>';
+    echo '    <input type="email" class="form-control" id="exampleInputEmail1" name = "username" aria-describedby="emailHelp" placeholder="Электронная почта">';
+   // echo '    <small id="emailHelp" class="form-text text-muted">We\'ll never share your email with anyone else.</small>';
     echo '  </div>';
     echo '  <div class="form-group">';
-    echo '    <label for="exampleInputPassword1">Password</label>';
-    echo '    <input type="password" class="form-control" name = "password" id="exampleInputPassword1" placeholder="Password">';
+    echo '    <label for="exampleInputPassword1">Пароль</label>';
+    echo '    <input type="password" class="form-control" name = "password" id="exampleInputPassword1" placeholder="пароль">';
     echo '  </div>';
-    echo '   <div class="form-check">';
-    echo '    <input type="checkbox" class="form-check-input" id="exampleCheck1">';
-    echo '     <label class="form-check-label" for="exampleCheck1">Check me out</label>';
-    echo '   </div>';
-    echo '   <button type="submit" name = "send" value ="submit" class="btn btn-primary">Submit</button>';
+    //echo '   <div class="form-check">';
+    //echo '    <input type="checkbox" class="form-check-input" id="exampleCheck1">';
+    //echo '     <label class="form-check-label" for="exampleCheck1">Check me out</label>';
+   // echo '   </div>';
+    echo '   <button type="submit" name = "send" value ="submit" class="btn btn-primary">Вход</button>';
     echo ' </form>';
     echo ' </div>';
+
+    echo ' <div class="my-3 p-3 bg-white rounded box-shadow">';
+    echo 'Регистрация';
+    echo '<hr>';
+    echo ' <form method="post" action="">';
+    echo '  <div class="form-group">';
+    echo '    <label for="exampleInputEmail1">Электронная почта</label>';
+    echo '    <input type="email" class="form-control" id="exampleInputEmail1" name = "username" aria-describedby="emailHelp" placeholder="Электронная почта">';
+    echo '  </div>';
+    echo '  <div class="form-group">';
+    echo '    <label for="exampleInputPassword1">Пароль</label>';
+    echo '    <input type="password" class="form-control" name = "password" id="exampleInputPassword1" placeholder="Пароль">';
+    echo '  </div>';
+    echo '  <div class="form-group">';
+    echo '    <label for="exampleInputPassword1">Повторите пароль</label>';
+    echo '    <input type="password" class="form-control" name = "password" id="exampleInputPassword1" placeholder="Повторите пароль">';
+    echo '  </div>';
+    echo '   <button type="submit" name = "send" value ="submit" class="btn btn-primary">Регистрация</button>';
+    echo ' </form>';
+    echo ' </div>';
+
+
+
     echo ' </div>';
     echo ' <div class="col-md-8">';
-    echo ' <br><br><br><br><bR><bR><bR><br><bR><br>';
-    echo ' <br><br><br><br><bR><bR><bR><br><bR><br>';
-    echo ' <br><br><br><br><bR><bR><bR><br><bR><br>';
+    echo '<br><br><br><br><img src="assets\images\index.png">';
     echo ' </div>';
     echo'</div>';
     echo '</main>';
 
+
+
+
+
 }
+
 ?>

@@ -45,7 +45,7 @@ public function insert_message($uid, $reply, $ip, $time, $cid) {
 
 
 public function messages ($c_id) {
-    $sql = 'SELECT reply FROM conversation_reply WHERE c_id_fk=:cid';
+    $sql = 'SELECT * FROM conversation_reply WHERE c_id_fk=:cid Order by cr_id DESC';
     $stmt = $this->pdo->prepare($sql);
     $stmt->execute([
         'cid' => $c_id
@@ -70,7 +70,13 @@ public function select_messages ($c_id) {
 }
 
 public function users () {
-    $sql = 'SELECT * FROM users';
+    $sql = 'SELECT u.user_id, u.username, u.email, ui.id, ui.user_id, ui.first_name, ui.last_name, ui.age, ui.country, ui.city, ui.education, ui.gender, ui.user_picture
+    FROM users AS u
+    JOIN userinfo AS ui
+    ON u.user_id = ui.user_id';
+
+
+    //$sql = 'SELECT * FROM users';
     $stmt = $this->pdo->prepare($sql);
     $stmt->execute();
     $users = $stmt->fetchAll();
@@ -79,7 +85,15 @@ public function users () {
 
 
 public function userpage ($user_id) {
-    $sql = 'SELECT * FROM users WHERE user_id = :user_id';
+
+    $sql = 'SELECT u.user_id, u.username, u.email, ui.id, ui.user_id, ui.first_name, ui.last_name, ui.age, ui.country, ui. about, ui.city, ui.education, ui.gender, ui.user_picture
+    FROM users AS u
+    JOIN userinfo AS ui
+    WHERE ui.user_id = :user_id';
+    //ON u.user_id = ui.user_id';
+
+
+    //$sql = 'SELECT * FROM users WHERE user_id = :user_id';
     $stmt = $this->pdo->prepare($sql);
     $stmt->execute([
         'user_id' => $user_id

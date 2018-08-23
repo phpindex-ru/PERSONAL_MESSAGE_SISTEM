@@ -1,3 +1,6 @@
+<?php
+include('views/header.php');
+?>
 <main role="main" class="container">
 <br>
 </div> </div>
@@ -8,7 +11,8 @@
 <div class="row">
 <div class="col-md-4">
 <div class="my-3 p-3 bg-white rounded box-shadow">
-
+<?php echo 'Conversation ID: ' . $c_id; ?>
+<br><br><br><br><br><br><br><br><br><br>
 </div>
 </div>
 <div class="col-md-8">
@@ -24,7 +28,21 @@
 </form>
 <hr>
 <?php
-print_r($allmessages);
+
+foreach($allmessages as $key => $val) {
+    //echo $val['user_id_fk'];
+
+    $query = 'SELECT first_name, last_name, user_picture FROM userinfo WHERE user_id = :user_id';
+    $stmt = $pdo->prepare($query);
+    $stmt->execute([
+        'user_id' => $val['user_id_fk']
+        ]);
+    $userinfo = $stmt->fetch();
+echo '<img src="images/' . $userinfo['user_picture'] . '" hight="50" width="50">' . ' ' .  $userinfo['first_name'] . ' ' . $userinfo['last_name'] . '';
+    echo  ' - ' . $val['reply'];
+    echo '<br><br>';
+}
+//print_r($allmessages);
 ?>
 </div>
 </main>
